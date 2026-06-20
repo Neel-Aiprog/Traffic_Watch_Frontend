@@ -53,7 +53,17 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
       }
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.detail || `AUTH_ERROR_${response.status}`);
+        let errorText = `AUTH_ERROR_${response.status}`;
+
+if (typeof err.detail === "string") {
+  errorText = err.detail;
+} else if (Array.isArray(err.detail)) {
+  errorText = err.detail.join(", ");
+} else if (typeof err.detail === "object" && err.detail !== null) {
+  errorText = err.detail.message || JSON.stringify(err.detail);
+}
+
+throw new Error(errorText);
       }
       const data = await response.json();
       if (isRegisterMode) {
