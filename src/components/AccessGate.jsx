@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ParticleField from "./ParticleField";
 
 // Vite environment variable for backend URL - falls back to localhost for development
-const BASE_URL = import.meta.env.BACKEND_URL || "http://localhost:8000";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 function Clock() {
   const [time, setTime] = useState(new Date());
