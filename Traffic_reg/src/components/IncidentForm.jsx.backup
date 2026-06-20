@@ -1,0 +1,145 @@
+import { useState } from "react";
+
+const EVENT_CAUSES = [
+  "vehicle_breakdown",
+  "accident",
+  "construction",
+  "water_logging",
+  "tree_fall",
+  "pot_holes",
+  "congestion",
+  "road_conditions",
+  "procession",
+  "public_event",
+  "protest",
+  "vip_movement",
+  "debris",
+  "others",
+];
+
+const KNOWN_CORRIDORS = [
+  "Mysore Road",
+  "Bellary Road",
+  "Outer Ring Road",
+  "Old Madras Road",
+  "Tumkur Road",
+  "Hosur Road",
+  "Bannerghata Road",
+  "Sarjapur Road",
+];
+
+const VEH_TYPES = ["unknown", "private_car", "two_wheeler", "bus", "heavy_vehicle"];
+
+const initialFormState = {
+  event_cause: EVENT_CAUSES[0],
+  corridor: KNOWN_CORRIDORS[0],
+  priority: "High",
+  requires_road_closure: false,
+  veh_type: VEH_TYPES[0],
+};
+
+export default function IncidentForm({ onSubmit, isSubmitting }) {
+  const [form, setForm] = useState(initialFormState);
+
+  function update(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const payload = {
+      ...form,
+      start_datetime: new Date().toISOString(),
+    };
+    onSubmit(payload);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="border border-outline-variant p-4 space-y-4">
+      <h3 className="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant pb-2">
+        INCIDENT ENTRY
+      </h3>
+
+      <div className="space-y-1">
+        <label className="font-label-caps text-[10px] text-on-surface-variant block">EVENT CAUSE</label>
+        <select
+          className="w-full bg-surface-container-lowest border border-outline-variant px-3 py-2 font-data-md text-data-md text-on-surface focus:outline-none focus:border-primary"
+          value={form.event_cause}
+          onChange={(e) => update("event_cause", e.target.value)}
+        >
+          {EVENT_CAUSES.map((cause) => (
+            <option key={cause} value={cause}>
+              {cause.replace(/_/g, " ").toUpperCase()}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="space-y-1">
+        <label className="font-label-caps text-[10px] text-on-surface-variant block">CORRIDOR</label>
+        <input
+          className="w-full bg-surface-container-lowest border border-outline-variant px-3 py-2 font-data-md text-data-md text-on-surface focus:outline-none focus:border-primary"
+          list="corridor-options"
+          value={form.corridor}
+          onChange={(e) => update("corridor", e.target.value)}
+          placeholder="e.g. Mysore Road"
+        />
+        <datalist id="corridor-options">
+          {KNOWN_CORRIDORS.map((c) => (
+            <option key={c} value={c} />
+          ))}
+        </datalist>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-1">
+          <label className="font-label-caps text-[10px] text-on-surface-variant block">PRIORITY</label>
+          <select
+            className="w-full bg-surface-container-lowest border border-outline-variant px-3 py-2 font-data-md text-data-md text-on-surface focus:outline-none focus:border-primary"
+            value={form.priority}
+            onChange={(e) => update("priority", e.target.value)}
+          >
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+
+        <div className="space-y-1">
+          <label className="font-label-caps text-[10px] text-on-surface-variant block">VEHICLE TYPE</label>
+          <select
+            className="w-full bg-surface-container-lowest border border-outline-variant px-3 py-2 font-data-md text-data-md text-on-surface focus:outline-none focus:border-primary"
+            value={form.veh_type}
+            onChange={(e) => update("veh_type", e.target.value)}
+          >
+            {VEH_TYPES.map((v) => (
+              <option key={v} value={v}>
+                {v.replace(/_/g, " ").toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <label className="flex items-center gap-2 font-data-md text-[12px] text-on-surface-variant cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.requires_road_closure}
+          onChange={(e) => update("requires_road_closure", e.target.checked)}
+          className="accent-primary"
+        />
+        REQUIRES ROAD CLOSURE
+      </label>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="group w-full bg-transparent border-2 border-primary text-primary font-label-caps text-label-caps py-3 tracking-[0.15em] transition-all hover:bg-primary/10 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
+      >
+        <span className={`material-symbols-outlined text-base ${isSubmitting ? "animate-spin" : ""}`}>
+          {isSubmitting ? "refresh" : "bolt"}
+        </span>
+        {isSubmitting ? "PREDICTING..." : "PREDICT SEVERITY"}
+      </button>
+    </form>
+  );
+}

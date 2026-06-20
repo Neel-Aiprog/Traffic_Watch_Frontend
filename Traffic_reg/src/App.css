@@ -1,0 +1,511 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-dim: #090b0e;
+  --color-surface-container-low: #121418;
+  --color-surface-container-lowest: #07080a;
+  --color-primary: #ffffff;
+  --color-outline-variant: #1c222e;
+  --color-on-surface: #d1d7e0;
+  --color-on-surface-variant: #6b778c;
+  --color-error: #e02424;
+  --color-accent-pink: #ff79c6;
+  --color-accent-blue: #3b82f6;
+
+  --font-data-md: "JetBrains Mono", monospace;
+  --font-data-lg: "JetBrains Mono", monospace;
+  --font-label-caps: "JetBrains Mono", monospace;
+  --font-display-sm: "JetBrains Mono", monospace;
+  --font-body-md: "JetBrains Mono", monospace;
+}
+
+:root {
+  --grid-color: rgba(255, 255, 255, 0.02);
+}
+
+body {
+  background-color: #06080c;
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: "JetBrains Mono", monospace;
+  margin: 0;
+  color: #d1d7e0;
+}
+
+/* Strict tactical borders and utility styles */
+.panel-border {
+  border: 1px solid #1c222e;
+}
+
+.scanline {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.06),
+    rgba(0, 255, 0, 0.02),
+    rgba(0, 0, 255, 0.06)
+  );
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.4;
+}
+
+.crt-flicker {
+  animation: flicker 0.25s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.99; }
+  50% { opacity: 1; }
+  100% { opacity: 0.995; }
+}
+
+/* Custom Scrollbar */
+.data-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.data-scrollbar::-webkit-scrollbar-track {
+  background: #07080a;
+}
+.data-scrollbar::-webkit-scrollbar-thumb {
+  background: #1c222e;
+}
+
+/* Custom Tactical Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #121418;
+  border: 1px solid #334155;
+  transition: .2s;
+}
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #6b778c;
+  transition: .2s;
+}
+input:checked + .toggle-slider {
+  background-color: #1e293b;
+  border-color: #94a3b8;
+}
+input:checked + .toggle-slider:before {
+  transform: translateX(18px);
+  background-color: #ffffff;
+}
+.cryptic-matrix-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, #0a0e17 0%, #030508 100%);
+}
+
+.cryptic-matrix-bg::after {
+  content: "01001001 01001110 01010100 01000101 01001100 01001100 01001001 01000111 01000101 01001110 01000011 01000101 000A 01010100 01010010 01000001 01000110 01000110 01001001 01000011 01011111 01001101 01000001 01010100 01010010 01011001 01011000";
+  position: absolute;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.015);
+  line-height: 12px;
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  transform: rotate(-15deg);
+  word-wrap: break-word;
+  animation: matrixShift 60s linear infinite;
+}
+
+@keyframes matrixShift {
+  0% { transform: translate(0, 0) rotate(-15deg); }
+  100% { transform: translate(-5%, -5%) rotate(-15deg); }
+}
+
+/* Boot Sequence Caret Animation */
+.terminal-caret {
+  animation: blink 0.8s infinite steps(2);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.tactical-hud-grid {
+  position: absolute;
+  inset: 0;
+  background-size: 44px 44px;
+  /* Hex colors with alpha channels for crisp tactical coloring */
+  background-image: 
+    linear-gradient(to right, rgba(30, 58, 138, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 58, 138, 0.25) 1px, transparent 1px);
+  /* Smooth linear translation translation loop over a 12 second sequence */
+  animation: tacticalGridScroll 12s linear infinite;
+}
+
+/* Sub-Pixel Coordinate Intersection Points (Enhancing the Grid Matrix Accent) */
+.tactical-hud-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 44px 44px;
+  background-image: radial-gradient(rgba(56, 189, 248, 0.4) 1px, transparent 1px);
+  animation: tacticalGridScroll 12s linear infinite;
+}
+
+/* Continuous Binary Sub-Data Stream Layer */
+.digital-matrix-stream {
+  font-family: monospace;
+  font-size: 9px;
+  background-image: linear-gradient(rgba(56, 189, 248, 0.03) 50%, transparent 50%);
+  background-size: 100% 20px;
+  animation: matrixScroll 20s linear infinite;
+}
+
+/* Caret Blinker Element */
+.terminal-caret {
+  animation: pulseBlink 0.8s infinite steps(2);
+}
+
+/* Infinite Scrolling Vector Transformations Matrix */
+@keyframes tacticalGridScroll {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    /* Translates precisely by the tile size dimensions to create a seamless loops pattern */
+    background-position: 44px 44px;
+  }
+}
+
+@keyframes matrixScroll {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 600px;
+  }
+}
+
+@keyframes pulseBlink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+/* ═══════════════════════════════════════════════════════════════════
+   BACKGROUND & ATMOSPHERIC ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.particle-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: rgba(196, 198, 207, 0.35);
+  border-radius: 50%;
+  animation: particle-drift linear infinite;
+}
+
+.particle::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.3;
+  animation: particle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes particle-drift {
+  0%   { transform: translateY(100vh) translateX(0px); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-20px) translateX(30px); opacity: 0; }
+}
+
+@keyframes particle-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(3); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SECOND SCANLINE PASS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.scanline-2 {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,198,207,0.06), transparent);
+  position: fixed;
+  top: -1px;
+  opacity: 0.8;
+  animation: scan 12s linear infinite 4s;
+  pointer-events: none;
+  z-index: 49;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TYPEWRITER TEXT EFFECT
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes type-in {
+  0%   { width: 0; opacity: 0; }
+  1%   { opacity: 1; }
+  100% { width: 100%; opacity: 1; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: type-in 1.2s steps(20, end) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CARD MOUNT (login card fade-in from below)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes card-mount {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card-mount {
+  animation: card-mount 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FORM INPUT FOCUS GLOW
+   ═══════════════════════════════════════════════════════════════════ */
+
+.tw-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tw-input:focus {
+  box-shadow: 0 1px 0 0 rgba(196, 198, 207, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTON SCAN SHIMMER
+   ═══════════════════════════════════════════════════════════════════ */
+
+.btn-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-scan::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -60%;
+  width: 40%;
+  height: 300%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(196, 198, 207, 0.08) 50%,
+    transparent 60%
+  );
+  animation: btn-scan-move 3s linear infinite;
+}
+
+@keyframes btn-scan-move {
+  0%   { left: -60%; }
+  100% { left: 120%; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PULSING CORNER BRACKETS
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes bracket-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; box-shadow: 0 0 6px rgba(196,198,207,0.3); }
+}
+
+.bracket-animated {
+  animation: bracket-pulse 2.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LIVE STREAMING DOT
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  50%       { box-shadow: 0 0 0 4px rgba(74, 222, 128, 0); }
+}
+
+.live-dot {
+  animation: live-pulse 1.5s ease-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIDEBAR NAV ACTIVE GLOW
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes nav-edge-glow {
+  0%, 100% { box-shadow: -2px 0 6px rgba(196,198,207,0.2); }
+  50%       { box-shadow: -2px 0 12px rgba(196,198,207,0.45); }
+}
+
+.nav-active-glow {
+  animation: nav-edge-glow 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TIER BADGE PULSE
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes tier-high-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+@keyframes tier-medium-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+.tier-badge-high   { animation: tier-high-pulse 2s ease-out infinite; }
+.tier-badge-medium { animation: tier-medium-pulse 2s ease-out infinite; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROBABILITY BAR SHIMMER
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes bar-fill-shimmer {
+  0%   { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.prob-bar {
+  background-size: 200px 100%;
+  animation: bar-fill-shimmer 2s linear infinite;
+}
+
+.prob-bar-high {
+  background-image: linear-gradient(
+    90deg,
+    rgba(239,68,68,0.9) 0%,
+    rgba(248,113,113,1) 50%,
+    rgba(239,68,68,0.9) 100%
+  );
+}
+
+.prob-bar-routine {
+  background-image: linear-gradient(
+    90deg,
+    rgba(107,114,128,0.9) 0%,
+    rgba(156,163,175,1) 50%,
+    rgba(107,114,128,0.9) 100%
+  );
+}
+
+.prob-bar-medium {
+  background-image: linear-gradient(
+    90deg,
+    rgba(245,158,11,0.9) 0%,
+    rgba(251,191,36,1) 50%,
+    rgba(245,158,11,0.9) 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODEL VOTING BARS — STAGGERED FILL
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes model-bar-enter {
+  from { width: 0 !important; }
+}
+
+.model-bar   { animation: model-bar-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.model-bar-1 { animation-delay: 0.05s; }
+.model-bar-2 { animation-delay: 0.15s; }
+.model-bar-3 { animation-delay: 0.25s; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   INCIDENT LOG ROW — SLIDE IN FROM RIGHT
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes log-row-enter {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.log-row-enter {
+  animation: log-row-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DATA SCROLLBAR — REFINED
+   ═══════════════════════════════════════════════════════════════════ */
+
+.data-scrollbar::-webkit-scrollbar       { width: 3px; }
+.data-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.data-scrollbar::-webkit-scrollbar-thumb { background: #2a2f3d; border-radius: 0; }
+.data-scrollbar::-webkit-scrollbar-thumb:hover { background: #45474b; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PANEL HEADER BLUR
+   ═══════════════════════════════════════════════════════════════════ */
+
+.panel-header {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DATA STREAM LINES (horizontal streaks in background)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes data-stream {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+.data-stream-line {
+  position: fixed;
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, rgba(196,198,207,0.15), transparent);
+  pointer-events: none;
+  z-index: 1;
+  animation: data-stream linear infinite;
+}
