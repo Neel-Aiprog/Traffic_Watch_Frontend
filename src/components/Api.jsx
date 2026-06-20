@@ -1,5 +1,5 @@
 // Vite environment variable for backend URL - falls back to localhost for development
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+const BASE_URL = import.meta.env.BACKEND_URL || "http://localhost:8000";
 
 /**
  * Calls POST /predict with the given event payload and session token.
