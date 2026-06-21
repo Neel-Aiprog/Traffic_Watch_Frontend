@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 function Clock() {
   const [time, setTime] = useState(new Date());
-  useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); });
+  useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); },[]);
   return <>{time.toTimeString().slice(0, 8)}</>;
 }
 
@@ -55,15 +55,21 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
         const err = await response.json().catch(() => ({}));
         let errorText = `AUTH_ERROR_${response.status}`;
 
-if (typeof err.detail === "string") {
-  errorText = err.detail;
-} else if (Array.isArray(err.detail)) {
-  errorText = err.detail.join(", ");
-} else if (typeof err.detail === "object" && err.detail !== null) {
-  errorText = err.detail.message || JSON.stringify(err.detail);
-}
+        if (typeof err.detail === "string") {
+          errorText = err.detail;
+        } else if (Array.isArray(err.detail)) {
+          // FastAPI validation errors are an array of objects like
+          // {type, loc, msg, input} -- .join() on raw objects produces
+          // "[object Object]" since each element's toString() is generic.
+          // Extract the human-readable .msg from each one instead.
+          errorText = err.detail
+            .map(d => (typeof d === "string" ? d : d.msg || JSON.stringify(d)))
+            .join(", ");
+        } else if (typeof err.detail === "object" && err.detail !== null) {
+          errorText = err.detail.message || err.detail.msg || JSON.stringify(err.detail);
+        }
 
-throw new Error(errorText);
+        throw new Error(errorText);
       }
       const data = await response.json();
       if (isRegisterMode) {
