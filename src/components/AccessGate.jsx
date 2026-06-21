@@ -31,7 +31,9 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
-
+  useEffect(() => {
+  setErrorMessage(null);
+}, [isRegisterMode]);
   async function handleVerify(e) {
     e.preventDefault();
     if (!username.trim() || !password.trim()) { setErrorMessage("OPERATOR_ID AND ACCESS_CODE REQUIRED"); return; }
@@ -166,7 +168,7 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
               </div>
             </div>
             <h1 className="font-data-md text-primary tracking-[0.15em] text-[13px]">
-              TRAFFIC_WATCH | SYSTEM ACCESS
+              TRAFFIC WATCH | SYSTEM ACCESS
             </h1>
             <p className="font-label-caps text-[9px] text-outline tracking-widest">
               SECURE OPERATIONAL TERMINAL — BENGALURU TRAFFIC POLICE
@@ -235,6 +237,7 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
             {isRegisterMode
               ? "EXISTING OPERATOR? — LOGIN"
               : "REQUEST AUTHORIZED TERMINAL PROVISIONAL ACCESS"}
+              
           </button>
 
           <p className="font-label-caps text-[8px] text-outline/30 text-center tracking-widest leading-relaxed border-t border-outline-variant pt-4">
