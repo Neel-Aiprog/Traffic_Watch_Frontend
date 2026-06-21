@@ -76,15 +76,15 @@ export default function PredictionResult({ result, error }) {
         </p>
 
         {/* Stat row */}
-        <div className="grid grid-cols-3 gap-2 pt-1">
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 pt-1">
           {[
             { label: "MANPOWER", value: `UNIT_0${recommendation.manpower_units}` },
             { label: "BARRICADES", value: recommendation.barricade ? "TYPE_3" : "NONE" },
             { label: "ALERT", value: recommendation.alert_control_room ? "BROADCAST" : "SILENT" },
           ].map(({ label, value }) => (
-            <div key={label} className="bg-surface-container-lowest border border-outline-variant/40 p-2 text-center">
-              <div className="font-label-caps text-[8px] text-outline tracking-widest mb-1">{label}</div>
-              <div className="font-data-md text-[10px] tracking-widest"
+            <div key={label} className="bg-surface-container-lowest border border-outline-variant/40 p-1.5 sm:p-2 text-center">
+              <div className="font-label-caps text-[7px] sm:text-[8px] text-outline tracking-widest mb-1 truncate">{label}</div>
+              <div className="font-data-md text-[9px] sm:text-[10px] tracking-widest truncate"
                 style={{ color: label === "ALERT" && recommendation.alert_control_room ? cfg.color : "#c4c6cf" }}>
                 {value}
               </div>
