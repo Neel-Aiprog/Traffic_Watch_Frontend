@@ -6,7 +6,7 @@ import IncidentLog from "./IncidentLog";
 import ParticleField from "./ParticleField";
 import { predictSeverity, SessionExpiredError, logout } from "./Api";
 import ExplanationPanel from "./ExplanationPanel";
-
+import FeedSimulator from "./FeedSimulator";
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); }, []);
@@ -179,8 +179,9 @@ export default function Dashboard({ sessionToken, userInfo, onSessionExpired }) 
 
           {/* Col 1: form */}
           <div className="lg:border-r border-b lg:border-b-0 border-outline-variant flex flex-col lg:overflow-hidden bg-surface-container-low/40 min-h-[460px] lg:min-h-0 flex-shrink-0">
-            <IncidentForm onSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
-          </div>
+  <IncidentForm onSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
+  <FeedSimulator onIncidentSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
+</div>
 
           {/* Col 2: prediction engine */}
           <div className="lg:border-r border-b lg:border-b-0 border-outline-variant flex flex-col lg:overflow-y-auto data-scrollbar bg-surface-container-low/20 flex-shrink-0">
