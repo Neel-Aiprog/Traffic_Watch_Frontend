@@ -5,7 +5,7 @@ import ModelVotingPanel from "./ModelVotingPanel";
 import IncidentLog from "./IncidentLog";
 import ParticleField from "./ParticleField";
 import { predictSeverity, SessionExpiredError, logout } from "./Api";
-
+import ExplanationPanel from "./ExplanationPanel";
 
 function Clock() {
   const [time, setTime] = useState(new Date());
@@ -192,6 +192,7 @@ export default function Dashboard({ sessionToken, userInfo, onSessionExpired }) 
               </div>
             </div>
             <PredictionResult result={latestResult} error={error} />
+            <ExplanationPanel factors={latestResult?.explanation?.factors} />
           </div>
 
           {/* Col 3: log */}
