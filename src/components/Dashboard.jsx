@@ -7,7 +7,7 @@ import ParticleField from "./ParticleField";
 import { predictSeverity, SessionExpiredError, logout } from "./Api";
 import ExplanationPanel from "./ExplanationPanel";
 import FeedSimulator from "./FeedSimulator";
-
+import AnalyticsDashboard from "./AnalyticsDashboard";
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); }, []);
@@ -207,10 +207,12 @@ export default function Dashboard({ sessionToken, userInfo, onSessionExpired }) 
           {/* Col 1: switches between INCIDENT ENTRY and SIMULATOR based on activeNav */}
           <div className="lg:border-r border-b lg:border-b-0 border-outline-variant flex flex-col lg:overflow-hidden bg-surface-container-low/40 min-h-[460px] lg:min-h-0 flex-shrink-0">
             {activeNav === "simulator" ? (
-              <FeedSimulator onIncidentSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
-            ) : (
-              <IncidentForm onSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
-            )}
+  <FeedSimulator onIncidentSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
+) : activeNav === "analytics" ? (
+  <AnalyticsDashboard entries={log} />
+) : (
+  <IncidentForm onSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
+)}
           </div>
 
           {/* Col 2: prediction engine — always visible regardless of nav */}
