@@ -3,7 +3,17 @@ import ParticleField from "./ParticleField";
 
 // Vite environment variable for backend URL - falls back to localhost for development
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-
+const GRID_STYLE = (
+  <style>{`
+    @keyframes grid-drift {
+      from { background-position: 0 0; }
+      to   { background-position: 32px 0; }
+    }
+    .grid-animated {
+      animation: grid-drift 6s linear infinite;
+    }
+  `}</style>
+);
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); },[]);
@@ -93,6 +103,8 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
   const inputBase = "w-full bg-surface-container-lowest border-b border-outline-variant text-primary font-data-md text-data-md px-3 py-2.5 outline-none tw-input placeholder:text-outline/40 tracking-widest text-[12px]";
 
   return (
+    <>
+    {GRID_STYLE}
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-primary-container grid-animated"
       style={{
         backgroundImage: "linear-gradient(rgba(30,41,59,0.22) 1px,transparent 1px),linear-gradient(90deg,rgba(30,41,59,0.22) 1px,transparent 1px)",
@@ -245,5 +257,6 @@ export default function AccessGate({ onAccessGranted, isRegisterMode = false, on
         </div>
       </div>
     </div>
+    </>
   );
 }
