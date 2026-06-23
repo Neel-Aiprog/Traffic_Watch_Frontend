@@ -60,6 +60,38 @@ const DEMO_FEED = [
     requires_road_closure: false,
     veh_type: "unknown",
   },
+  {
+    label: "Protest — Mysore Road",
+    event_cause: "protest",
+    corridor: "Mysore Road",
+    priority: "High",
+    requires_road_closure: true,
+    veh_type: "unknown",
+  },
+  {
+    label: "Pot holes — Old Madras Road",
+    event_cause: "pot_holes",
+    corridor: "Old Madras Road",
+    priority: "Low",
+    requires_road_closure: false,
+    veh_type: "unknown",
+  },
+  {
+    label: "Congestion — Hosur Road",
+    event_cause: "congestion",
+    corridor: "Hosur Road",
+    priority: "Low",
+    requires_road_closure: false,
+    veh_type: "private_car",
+  },
+  {
+    label: "Public event — Magadi Road",
+    event_cause: "public_event",
+    corridor: "Magadi Road",
+    priority: "High",
+    requires_road_closure: false,
+    veh_type: "unknown",
+  },
 ];
 
 const INTERVAL_MS = 9000; // 9 seconds between incidents
