@@ -10,7 +10,7 @@ const GRID_STYLE = (
       to   { background-position: 32px 0; }
     }
     .grid-animated {
-      animation: grid-drift 6s linear infinite;
+      animation: grid-drift 4s linear infinite;
     }
   `}</style>
 );
