@@ -8,6 +8,7 @@ import { predictSeverity, SessionExpiredError, logout } from "./Api";
 import ExplanationPanel from "./ExplanationPanel";
 import FeedSimulator from "./FeedSimulator";
 import AnalyticsDashboard from "./AnalyticsDashboard";
+import LogsView from "./LogsView";
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => { const id = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(id); }, []);
@@ -20,7 +21,6 @@ const NAV = [
   { id: "incidents",  icon: "warning",       label: "INCIDENTS"  },
   { id: "simulator",  icon: "play_circle",   label: "SIMULATOR"  },
   { id: "analytics",  icon: "analytics",     label: "ANALYTICS"  },
-  { id: "resources",  icon: "local_police",  label: "RESOURCES"  },
   { id: "logs",       icon: "history",       label: "LOGS"       },
 ];
 
@@ -201,15 +201,15 @@ export default function Dashboard({ sessionToken, userInfo, onSessionExpired }) 
           </div>
         </aside>
 
-        {/* 3-column content */}
         <div className="flex-1 flex flex-col lg:grid lg:grid-cols-[260px_1fr_270px] overflow-y-auto lg:overflow-hidden min-w-0">
 
-          {/* Col 1: switches between INCIDENT ENTRY and SIMULATOR based on activeNav */}
           <div className="lg:border-r border-b lg:border-b-0 border-outline-variant flex flex-col lg:overflow-hidden bg-surface-container-low/40 min-h-[460px] lg:min-h-0 flex-shrink-0">
             {activeNav === "simulator" ? (
   <FeedSimulator onIncidentSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
 ) : activeNav === "analytics" ? (
   <AnalyticsDashboard entries={log} />
+) : activeNav === "logs" ? (
+  <LogsView entries={log} />
 ) : (
   <IncidentForm onSubmit={handleSubmitIncident} isSubmitting={isSubmitting} />
 )}
