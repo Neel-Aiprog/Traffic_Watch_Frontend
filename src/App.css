@@ -509,11 +509,3 @@ input:checked + .toggle-slider:before {
   z-index: 1;
   animation: data-stream linear infinite;
 }
-@keyframes gridDrift {
-  0%   { background-position: 0px 0px; }
-  100% { background-position: 28px 28px; }
-}
-
-.grid-animated {
-  animation: gridDrift 18s linear infinite;
-}
